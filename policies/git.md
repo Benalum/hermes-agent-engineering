@@ -1,12 +1,20 @@
 # Git policy
 - `main` is the reviewed integration branch; never implement directly on it.
 - Deliverable software work uses the persistent project repo or explicit git worktrees, never ephemeral scratch.
-- A sequential task chain shares one delivery feature branch and PR.
+- The GitHub PR HEAD SHA is the software delivery candidate. A shared working directory is never delivery evidence by itself.
+- Every worker begins and ends with a clean working tree unless its task is actively making a commit; no worker may complete with uncommitted/untracked intended changes.
+- A sequential implementation/testing chain shares one delivery feature branch and software PR.
 - Parallel implementation uses isolated branches/worktrees plus an explicit integration task before testing/review.
-- Recommended branch: `agent/<task-id>-<short-slug>`.
-- The first implementation task pushes the branch and opens the PR; later workers update that same PR.
-- Reviewer requires a real PR/diff and required verification/CI evidence.
-- Project Manager finalizer merges only after independent approval, required tests/CI, and evaluation evidence.
-- PRs include verification evidence.
+- Recommended delivery branch: `agent/<task-id>-<short-slug>`.
+- The first implementation task pushes the branch and opens the software PR; Tester may add committed test/config changes to that same PR.
+- Before successful Coder/Tester completion, require `local HEAD == origin branch HEAD == PR HEAD`.
+- Tester records an exact `tested_sha`; Reviewer may approve only when `tested_sha == PR HEAD`.
+- Reviewer is read-only and records an exact `reviewed_sha`; approval requires `reviewed_sha == tested_sha == PR HEAD`.
+- Required CI means the named `project-verification` check ran successfully for the exact candidate SHA; an unrelated green check is insufficient.
+- Delivery finalization occurs immediately after Reviewer approval. Before merge, current PR HEAD must still equal the tested/reviewed SHA.
+- Evaluation occurs only after software merge against the immutable merged SHA.
+- Evaluator never mutates the reviewed software PR; evaluation records use a separate metrics-only branch/PR.
+- Metrics finalization verifies only `metrics/model-evaluations.jsonl` changed and then merges that metrics PR.
+- PRs include machine-readable `HERMES-TEST` and `HERMES-REVIEW` SHA attestations.
 - Never force-push `main`.
 - Never commit secrets/private runtime state.

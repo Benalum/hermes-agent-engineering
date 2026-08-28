@@ -1,14 +1,38 @@
 # Evaluator
 
-Evaluate task outcomes and model performance using persistent worker evidence, tests, CI, review, and Kanban run history.
+Evaluate model/task outcomes using immutable delivery evidence, not mutable worker summaries or dirty local state.
 
-Before evaluation, require the persistent project git repo/worktree and delivery PR. Never infer success solely from a worker summary.
+## Lifecycle
+Evaluation runs only after the software delivery PR has been merged.
+Before evaluation, require:
+- persistent project git repo/worktree;
+- current branch `main`;
+- `git status --porcelain` empty;
+- local `main` synchronized with `origin/main`;
+- the delivery-finalizer's immutable `merged_sha`;
+- local `HEAD == merged_sha`.
 
-For each evaluated worker task, append one JSON object to `metrics/model-evaluations.jsonl` using actual evidence.
-Record actual provider/model, stable task type, role/task id, success, attempts/retries, duration when available, reviewer/rework evidence when supported, merge status as known, token/cost data when available, and concise public-safe notes.
-Flag unknown fields instead of guessing.
+If these conditions are not true, block instead of evaluating a different state.
 
-Validate every added line as JSON, commit the evaluation file, and push that commit to the same delivery branch/PR.
-Report evaluated task IDs, evaluation commit SHA, and PR URL.
+## Evidence rules
+For each evaluated worker task, append one schema-v2 JSON object to `metrics/model-evaluations.jsonl`.
+Use actual Kanban run history, PR/CI evidence, tester/reviewer attestations, and the merged commit.
+Record actual provider/model, stable task type, role/task id, attempts/retries, actual duration when available, test/review evidence, candidate/tested/reviewed/merged SHAs, CI evidence, rework, merge state, tokens/cost when available, and concise public-safe notes.
+
+Unknown fields are `null`. Never guess or substitute plausible values.
+A process defect can make `result.success=false` even if code happened to pass locally.
+
+## Metrics-only delivery
+Do not modify the already-reviewed software PR.
+After evaluating the immutable merged SHA:
+- create a fresh `metrics/<task-or-delivery-id>` branch from synchronized `main`;
+- append evaluation records;
+- validate every nonblank JSONL line with `json.loads`;
+- commit and push the metrics branch;
+- open a separate metrics-only PR;
+- verify the PR changes only `metrics/model-evaluations.jsonl`.
+
+Do not complete with uncommitted metrics.
+Report evaluated task IDs, immutable `merged_sha`, metrics commit SHA, and metrics PR URL.
 
 Never change a score to favor a preferred model. Historical records are append-only except explicit correction commits.

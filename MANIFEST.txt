@@ -31,6 +31,8 @@ project-template/PROJECT.md
 project-template/README.md
 project-template/metrics/README.md
 project-template/metrics/model-evaluations.jsonl
+project-template/scripts/check_candidate.sh
+project-template/scripts/verify.sh
 schemas/evaluation.schema.json
 schemas/project.schema.json
 schemas/task-metadata.schema.json
