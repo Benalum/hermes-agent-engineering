@@ -1,7 +1,12 @@
 # Git policy
-- `main` is the reviewed integration branch.
-- Implementation tasks use isolated branches/worktrees.
+- `main` is the reviewed integration branch; never implement directly on it.
+- Deliverable software work uses the persistent project repo or explicit git worktrees, never ephemeral scratch.
+- A sequential task chain shares one delivery feature branch and PR.
+- Parallel implementation uses isolated branches/worktrees plus an explicit integration task before testing/review.
 - Recommended branch: `agent/<task-id>-<short-slug>`.
+- The first implementation task pushes the branch and opens the PR; later workers update that same PR.
+- Reviewer requires a real PR/diff and required verification/CI evidence.
+- Project Manager finalizer merges only after independent approval, required tests/CI, and evaluation evidence.
 - PRs include verification evidence.
 - Never force-push `main`.
 - Never commit secrets/private runtime state.
