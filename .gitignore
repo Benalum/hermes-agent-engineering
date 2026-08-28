@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.worktrees/
+.DS_Store
+*.sqlite3
+*.db
+*.log
+secrets/
+auth.json
+cookies*

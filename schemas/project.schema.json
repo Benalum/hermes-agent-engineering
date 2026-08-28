@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Hermes Managed Project",
+  "type": "object",
+  "required": [
+    "slug",
+    "name",
+    "repository",
+    "board",
+    "status"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "local_path": {
+      "type": "string"
+    },
+    "board": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "archived"
+      ]
+    }
+  }
+}

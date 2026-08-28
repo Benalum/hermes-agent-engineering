@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task Planning Metadata",
+  "type": "object",
+  "required": [
+    "task_type",
+    "role",
+    "acceptance_criteria"
+  ],
+  "properties": {
+    "task_type": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "selected_model": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "selection_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verification_commands": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
