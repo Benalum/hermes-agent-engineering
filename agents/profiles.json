@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "profiles": [
+    {
+      "name": "projects-manager",
+      "description": "Portfolio manager for public Hermes projects and boards.",
+      "suggested_toolsets": [
+        "file",
+        "terminal",
+        "web",
+        "browser",
+        "kanban",
+        "delegation"
+      ]
+    },
+    {
+      "name": "project-manager",
+      "description": "Plans one project, assigns workers, coordinates review, tracks evidence.",
+      "suggested_toolsets": [
+        "file",
+        "terminal",
+        "web",
+        "kanban",
+        "delegation"
+      ]
+    },
+    {
+      "name": "coder",
+      "description": "Implements bounded software tasks/tests in an assigned worktree.",
+      "suggested_toolsets": [
+        "file",
+        "terminal",
+        "web",
+        "kanban",
+        "code_execution"
+      ]
+    },
+    {
+      "name": "researcher",
+      "description": "Researches docs, APIs, technologies, and source evidence.",
+      "suggested_toolsets": [
+        "file",
+        "web",
+        "browser",
+        "kanban"
+      ]
+    },
+    {
+      "name": "tester",
+      "description": "Independently tests implementations and reports evidence.",
+      "suggested_toolsets": [
+        "file",
+        "terminal",
+        "browser",
+        "kanban",
+        "code_execution"
+      ]
+    },
+    {
+      "name": "reviewer",
+      "description": "Independently reviews correctness, tests, security and requirements.",
+      "suggested_toolsets": [
+        "file",
+        "terminal",
+        "web",
+        "kanban"
+      ]
+    },
+    {
+      "name": "documentation",
+      "description": "Maintains public project documentation and setup/API docs.",
+      "suggested_toolsets": [
+        "file",
+        "web",
+        "kanban"
+      ]
+    },
+    {
+      "name": "evaluator",
+      "description": "Records evidence-based task/model performance and scorecards.",
+      "suggested_toolsets": [
+        "file",
+        "terminal",
+        "kanban",
+        "code_execution"
+      ]
+    }
+  ]
+}

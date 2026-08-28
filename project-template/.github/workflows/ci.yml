@@ -1,0 +1,15 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  repository-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Basic public-repository checks
+        run: |
+          test -f AGENTS.md
+          test -f PROJECT.md
+          test -f metrics/model-evaluations.jsonl
