@@ -73,17 +73,61 @@ Merge only if:
 - `project-verification` is green for that exact SHA;
 - `HERMES-TEST` and `HERMES-REVIEW outcome=APPROVE` evidence exists for that SHA.
 
-After merge, switch to `main`, pull the merged result, record the immutable `merged_sha`, and complete with that SHA in the summary.
+After the merge command, query GitHub again and require `state=MERGED`, non-null `mergedAt`, and non-null `mergeCommit.oid`.
+
+Then run `git fetch origin`, switch to `main`, reset local `main` to `origin/main`, and require:
+
+- local `HEAD == origin/main`;
+- local `HEAD == GitHub mergeCommit.oid`.
+
+Record that immutable `merged_sha` and complete with it in the summary.
+
+Never treat local branch movement, a local fast-forward, or a successful-looking merge command as proof that a GitHub PR merged.
 
 ### Evaluator task
 Run only after software merge.
 Evaluate the immutable `merged_sha` from `main`; never mutate the reviewed software PR.
 Create one evidence-based model record per evaluated worker task.
 Unknown values are `null`; never guess durations, costs, test counts, SHAs, or success.
+Every evaluation record MUST be created through `scripts/record_evaluation.py`; direct writes or hand-authored JSON objects in `metrics/model-evaluations.jsonl` are forbidden.
+
+Before commit or push, require:
+
+`scripts/validate_evaluations.py metrics/model-evaluations.jsonl --schema schemas/evaluation.schema.json --require-records`
+
+to pass.
+
 Persist evaluation records on a separate `metrics/<task-or-delivery-id>` branch/PR that changes only `metrics/model-evaluations.jsonl`.
 
 ### Metrics-finalizer task
-Verify the metrics PR changes only `metrics/model-evaluations.jsonl`, every nonblank line is valid JSON, and records cite the immutable merged SHA/evidence. Then merge the metrics-only PR.
+Verify the metrics PR changes only `metrics/model-evaluations.jsonl`.
+
+Require:
+
+`scripts/validate_evaluations.py metrics/model-evaluations.jsonl --schema schemas/evaluation.schema.json --require-records`
+
+to pass.
+
+Require the GitHub Actions `evaluation-schema` check green for the exact metrics PR HEAD.
+
+Only then attempt the GitHub PR merge.
+
+After the merge command, query GitHub again and require:
+
+- `state=MERGED`;
+- non-null `mergedAt`;
+- non-null `mergeCommit.oid`.
+
+A local branch movement is never proof of a GitHub merge.
+
+After GitHub confirms the merge:
+
+- run `git fetch origin`;
+- switch to `main`;
+- reset local `main` to `origin/main`;
+- require local `HEAD == origin/main == GitHub mergeCommit.oid`.
+
+If any condition fails, block and do not report the metrics PR as merged.
 
 ## You must not
 - implement routine worker tasks merely to avoid delegation;

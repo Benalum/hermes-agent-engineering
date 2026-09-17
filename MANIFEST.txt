@@ -43,3 +43,7 @@ scripts/model_scorecard.py
 scripts/record_evaluation.py
 scripts/smoke_test.sh
 tests/test_model_router.py
+scripts/validate_evaluations.py
+project-template/scripts/record_evaluation.py
+project-template/scripts/validate_evaluations.py
+project-template/schemas/evaluation.schema.json
